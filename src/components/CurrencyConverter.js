@@ -120,6 +120,7 @@ const CurrencyConverter = () => {
   const onBlurHandler = (e) => {
     console.log("unfocus");
     // if (e.target.value === NaN) return;
+    // Nice
     let numAmount = +e.target.value;
     // numAmount = parseFloat(numAmount.replace(/,/g, ""));
     
