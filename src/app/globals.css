@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .tw-field {
+    @apply appearance-none shadow-customShadow text-gray-900 focus:shadow-customShadowHover block w-full text-left md:text-center text-3xl outline-none rounded-lg  py-3 px-7  transition-all ease-in-out duration-300 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-gray-900;
+  }
+
+  .social-buttons button {
+    @apply w-10 h-10 rounded-full !border !border-red-400 !outline-none flex items-center justify-center;
+    border: 1px solid #e5e7eb !important;
+    -webkit-transition: 0.3s all ease;
+    -moz-transition: 0.3s all ease;
+    transition: 0.3s all ease;
+  }
+  .social-buttons button:hover {
+    border: 1px solid #9ca3af !important;
+  }
+
+  .content-wrap {
+    @apply max-w-2xl mx-auto mb-8;
+  }
+  .content-wrap h2 {
+    @apply text-gray-900 text-base mb-4 font-bold;
+  }
+  .content-wrap h3 {
+    @apply text-gray-900 text-sm mb-4 font-bold;
+  }
+  .content-wrap p {
+    @apply text-gray-600 leading-loose text-sm mb-5;
+  }
+  .content-wrap ul {
+    @apply list-disc pl-3.5 text-gray-600 text-sm space-y-1.5 mb-4;
+  }
+
+  .box-container-shadow {
+    @apply max-w-2xl lg:w-screen mx-auto text-center mb-10 border border-gray-200 rounded-md p-10 shadow-customShadowContainer;
+  }
+}
+.tailwind-btn {
+}
+
+.tailwind-btn {
+  width: 200px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  /* margin: 20px; */
+  margin-right: 0;
+  /* height: 55px; */
+  text-align: center;
+  border: none;
+  background-size: 300% 100%;
+
+  border-radius: 50px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+.tailwind-btn:hover {
+  background-position: 100% 0;
+  moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+.tailwind-btn:focus {
+  outline: none;
+}
+
+.tailwind-btn.color-1 {
+  background-image: linear-gradient(
+    to right,
+    #25aae1,
+    #40e495,
+    #30dd8a,
+    #2bb673
+  );
+  box-shadow: 0 4px 15px 0 rgba(49, 196, 190, 0.75);
+}
