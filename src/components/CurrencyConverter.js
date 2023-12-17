@@ -36,7 +36,9 @@ const CurrencyConverter = () => {
     // console.log('sulod', selectedOne, selectedTwo);
     let quoteDescriptionTmp, quoteAmountTmp, dateQuoteTmp, fromDesc, toDesc;
     try {
-      const res = await fetch("http://localhost:4444/api/getDownloads", {
+      const URL_LOCAL = "http://localhost:4444/api/getDownloads";
+      const URL_LIVE = "https://plexcalc.com/api/getDownloads";
+      const res = await fetch(`${URL_LIVE}`, {
         method: "POST",
         body: JSON.stringify({ selectedOne, selectedTwo }),
       });
