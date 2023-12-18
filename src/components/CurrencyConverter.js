@@ -453,19 +453,19 @@ const CurrencyConverter = () => {
           </div>
         ) : (
           <div className="result text-2xl">
-            <p className="leading-none">
+            <p className="leading-relaxed">
               <span>1.000 {selectedOne}</span> ={" "}
               <span className="text-green-600">
                 {currencyValue} {selectedTwo}
               </span>
             </p>
             {fromCurrencyName && (
-              <p className="text-[1rem] font-[400] mb-0 leading-none">
+              <p className="text-[1rem] font-[400] mb-0 leading-relaxed">
                 {fromCurrencyName} to {toCurrencyName}
               </p>
             )}
             {dateQuote && (
-              <p className="text-[0.75rem] font-[300] -mt-2 leading-none">
+              <p className="text-[0.75rem] font-[300] -mt-2 leading-relaxed">
                 Last Exchange Rate Date: {dateQuote}
               </p>
             )}
