@@ -439,12 +439,16 @@ const CurrencyConverter = () => {
               {currencyValue} {selectedTwo}
             </span>
           </p>
-          <p className="text-[1rem] font-[400] mb-0">
-            {fromCurrencyName} to {toCurrencyName}
-          </p>
-          <p className="text-[0.75rem] font-[300] -mt-2">
-            Last Exchange Rate Date: {dateQuote}
-          </p>
+          {fromCurrencyName && (
+            <p className="text-[1rem] font-[400] mb-0">
+              {fromCurrencyName} to {toCurrencyName}
+            </p>
+          )}
+          {dateQuote && (
+            <p className="text-[0.75rem] font-[300] -mt-2">
+              Last Exchange Rate Date: {dateQuote}
+            </p>
+          )}
         </div>
       </div>
     </div>
