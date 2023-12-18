@@ -465,7 +465,7 @@ const CurrencyConverter = () => {
               </p>
             )}
             {dateQuote && (
-              <p className="text-[0.75rem] font-[300] -mt-2 leading-relaxed">
+              <p className="text-[0.75rem] font-[300] leading-relaxed">
                 Last Exchange Rate Date: {dateQuote}
               </p>
             )}
