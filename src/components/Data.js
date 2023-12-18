@@ -42,11 +42,11 @@ const navigationMenu = [
     href: "/tailwindcss-colors-to-hsl-rgb-converter",
   },
   {
-    name: "Pomodoro Task Timer",
+    name: "Pomodoro Task timer",
     href: "/pomodoro-task-timer",
   },
   {
-    name: "Currency Converter",
+    name: "Currency converter",
     href: "/currency-converter",
   },
 ];
