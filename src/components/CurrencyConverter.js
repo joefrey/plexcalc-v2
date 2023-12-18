@@ -8,15 +8,17 @@ import Image from "next/image";
 import axios from "axios";
 
 const CurrencyConverter = () => {
-  const [currencyValue, setCurrencyValue] = useState(0);
+  const [currencyValue, setCurrencyValue] = useState(null);
   const [loading, setLoading] = useState(true);
   const [amount, setAmount] = useState(1);
-  const [convertAmount, setConvertAmount] = useState(0);
+  const [convertAmount, setConvertAmount] = useState(null);
   const [dateQuote, setDateQuote] = useState('');
   const [description, setDescription] = useState('');
   const [typing, setTyping] = useState(false);
   const [fromCurrencyName, setFromCurrencyName] = useState('');
   const [toCurrencyName, setToCurrencyName] = useState('');
+  const [init, setInit] = useState(false);
+  
   // const [currencyCountryFrom, setCurrencyCountryFrom] = useState("");
   // const [currencyCountryTo, setCurrencyCountryTo] = useState("");
 
@@ -40,7 +42,7 @@ const CurrencyConverter = () => {
     try {
       const URL_LOCAL = "http://localhost:4444/api/getDownloads";
       const URL_LIVE = "https://plexcalc.com/api/getDownloads";
-      const res = await fetch(`${URL_LIVE}`, {
+      const res = await fetch(`${URL_LOCAL}`, {
         method: "POST",
         body: JSON.stringify({ selectedOne, selectedTwo }),
       });
@@ -51,10 +53,12 @@ const CurrencyConverter = () => {
       quoteAmountTmp = quoteAmount;
       dateQuoteTmp = dateQuote;
 
+      
+
       setCurrencyValue(+quoteAmountTmp);
       setDateQuote(dateQuoteTmp);
       // setDescription(fromDesc);
-      computeAmount(+amount, +currencyValue);
+      // computeAmount(+amount, +currencyValue);
 
       const currencyNameFrom = getValueBySearchTerm(
         countryCodeNameOfCurrency,
@@ -66,6 +70,7 @@ const CurrencyConverter = () => {
       );
       setFromCurrencyName(currencyNameFrom);
       setToCurrencyName(currencyNameTo);
+      
 
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -127,6 +132,7 @@ const CurrencyConverter = () => {
     // console.log(typing);
     // console.log(amount, typeof amount);
     // console.log(convertAmount, typeof convertAmount);
+    
     if (typing === false) {
       getDownloadHandler();
     } 
@@ -136,15 +142,16 @@ const CurrencyConverter = () => {
     // console.log("unfocus");
     // if (e.target.value === NaN) return;
     // Nice
+    if (e.target.value === '') return;
     let numAmount;
     if (typeof e.target.value === 'string') {
-      console.log("string gyud");
+      // console.log("string gyud");
       
       numAmount = parseFloat(e.target.value.replace(/,/g, ""));
       numAmount = +numAmount;
       // numAmount = +e.target.value;
     } else {
-      console.log("dili string");
+      // console.log("dili string");
       numAmount = e.target.value;
     }
     
@@ -213,7 +220,7 @@ const CurrencyConverter = () => {
 
   function computeAmount(amountArg, currencyArg) {
 
-    
+    if (amountArg === '') return;
     // console.log(typeof amountArg, amountArg);
     const compute = currencyArg * parseFloat(String(amountArg)?.replace(/,/g, ""));
 
@@ -253,7 +260,7 @@ const CurrencyConverter = () => {
             <input
               type="text"
               className="!outline-none !appearance-none w-3/4"
-              value={amount ? amount : 0}
+              value={amount}
               readOnly={loading ? true : false}
               onBlur={onBlurHandler}
               onChange={computeAmountHandler}
@@ -344,14 +351,20 @@ const CurrencyConverter = () => {
             Convert to
           </label>
           <div className="flex tw-field relative py-5">
+            {loading && (
+              <span className="absolute z-50 top-1/2 left-4 -translate-y-1/2 !text-[.75rem]">
+                {loading ? "Loading..." : ""}
+              </span>
+            )}
             <input
               type="text"
               readOnly
               className={`!outline-none !appearance-none w-3/4 text-indigo-600 ${
                 loading ? "text-opacity-10" : "text-opacity-100"
               }`}
-              value={convertAmount ? convertAmount : currencyValue}
-              // onChange={(e) => setConvertAmount(e.target.value)}
+              // value={typing === false ? currencyValue : convertAmount}
+              // value={convertAmount === currencyValue ? currencyValue : convertAmount}
+              value={convertAmount != 0 ? convertAmount : currencyValue}
             />
             <Combobox value={selectedTwo} onChange={comboTwoHandler}>
               <div className="absolute w-[80px] top-1/2 -translate-y-1/2 z-1 right-2 !outline-none !appearance-none">
@@ -432,24 +445,32 @@ const CurrencyConverter = () => {
           </div>
         </div>
 
-        <div className="result text-2xl">
-          <p>
-            <span>1.000 {selectedOne}</span> ={" "}
-            <span className="text-green-600">
-              {currencyValue} {selectedTwo}
-            </span>
-          </p>
-          {fromCurrencyName && (
-            <p className="text-[1rem] font-[400] mb-0">
-              {fromCurrencyName} to {toCurrencyName}
-            </p>
-          )}
-          {dateQuote && (
+        {loading ? (
+          <div className="mt-4">
             <p className="text-[0.75rem] font-[300] -mt-2">
-              Last Exchange Rate Date: {dateQuote}
+              Please wait... Fetching latest currency exchange rate...
             </p>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="result text-2xl">
+            <p>
+              <span>1.000 {selectedOne}</span> ={" "}
+              <span className="text-green-600">
+                {currencyValue} {selectedTwo}
+              </span>
+            </p>
+            {fromCurrencyName && (
+              <p className="text-[1rem] font-[400] mb-0">
+                {fromCurrencyName} to {toCurrencyName}
+              </p>
+            )}
+            {dateQuote && (
+              <p className="text-[0.75rem] font-[300] -mt-2">
+                Last Exchange Rate Date: {dateQuote}
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
