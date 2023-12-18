@@ -42,7 +42,7 @@ const CurrencyConverter = () => {
     try {
       const URL_LOCAL = "http://localhost:4444/api/getDownloads";
       const URL_LIVE = "https://plexcalc.com/api/getDownloads";
-      const res = await fetch(`${URL_LOCAL}`, {
+      const res = await fetch(`${URL_LIVE}`, {
         method: "POST",
         body: JSON.stringify({ selectedOne, selectedTwo }),
       });
