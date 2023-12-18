@@ -3,7 +3,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { Combobox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import TitleNav from "./TitleNav";
-import { countryCode } from "./DataCountries";
+import { countryCode, countryCodeNameOfCurrency } from "./DataCountries";
 import Image from "next/image";
 import axios from "axios";
 
@@ -15,6 +15,8 @@ const CurrencyConverter = () => {
   const [dateQuote, setDateQuote] = useState('');
   const [description, setDescription] = useState('');
   const [typing, setTyping] = useState(false);
+  const [fromCurrencyName, setFromCurrencyName] = useState('');
+  const [toCurrencyName, setToCurrencyName] = useState('');
   // const [currencyCountryFrom, setCurrencyCountryFrom] = useState("");
   // const [currencyCountryTo, setCurrencyCountryTo] = useState("");
 
@@ -38,21 +40,32 @@ const CurrencyConverter = () => {
     try {
       const URL_LOCAL = "http://localhost:4444/api/getDownloads";
       const URL_LIVE = "https://plexcalc.com/api/getDownloads";
-      const res = await fetch(`${URL_LIVE}`, {
+      const res = await fetch(`${URL_LOCAL}`, {
         method: "POST",
         body: JSON.stringify({ selectedOne, selectedTwo }),
       });
-      const { fromNameOfCurrency, toNameOfCurrency, quoteAmount, dateQuote } = await res.json();
+      const { quoteAmount, dateQuote } = await res.json();
 
-      fromDesc = fromNameOfCurrency;
-      toDesc = toNameOfCurrency;
+      // fromDesc = fromNameOfCurrency;
+      // toDesc = toNameOfCurrency;
       quoteAmountTmp = quoteAmount;
       dateQuoteTmp = dateQuote;
 
       setCurrencyValue(+quoteAmountTmp);
       setDateQuote(dateQuoteTmp);
-      setDescription(fromDesc);
+      // setDescription(fromDesc);
       computeAmount(+amount, +currencyValue);
+
+      const currencyNameFrom = getValueBySearchTerm(
+        countryCodeNameOfCurrency,
+        selectedOne
+      );
+      const currencyNameTo = getValueBySearchTerm(
+        countryCodeNameOfCurrency,
+        selectedTwo
+      );
+      setFromCurrencyName(currencyNameFrom);
+      setToCurrencyName(currencyNameTo);
 
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -61,7 +74,7 @@ const CurrencyConverter = () => {
       
       setCurrencyValue(+quoteAmountTmp);
       setDateQuote(dateQuoteTmp);
-      setDescription(fromDesc);
+      // setDescription(fromDesc);
       computeAmount(String(amount), +currencyValue);
       
       setLoading(false);
@@ -120,24 +133,27 @@ const CurrencyConverter = () => {
   }, [amount, convertAmount, setSelectedOne, setTyping, filteredCountryOne, filteredCountryTwo]);
 
   const onBlurHandler = (e) => {
-    console.log("unfocus");
+    // console.log("unfocus");
     // if (e.target.value === NaN) return;
     // Nice
-    let numAmount = +e.target.value;
-    // numAmount = parseFloat(numAmount.replace(/,/g, ""));
-    
-
-    // parseFloat(numAmount.replace(/,/g, ""));
-    // console.log(typeof numAmount);
-    // if (numAmount === NaN) {
-    //   console.log("NaN");
-    //   return;
-    // }
-    if (typeof numAmount === "string") {
-      numAmount = numAmount;
+    let numAmount;
+    if (typeof e.target.value === 'string') {
+      console.log("string gyud");
+      
+      numAmount = parseFloat(e.target.value.replace(/,/g, ""));
+      numAmount = +numAmount;
+      // numAmount = +e.target.value;
     } else {
-      numAmount = amount;
+      console.log("dili string");
+      numAmount = e.target.value;
     }
+    
+    
+    // if (typeof numAmount === "string") {
+    //   numAmount = numAmount;
+    // } else {
+    //   numAmount = amount;
+    // }
 
     // console.log(numAmount, typeof numAmount);
 
@@ -165,13 +181,14 @@ const CurrencyConverter = () => {
 
   const computeAmountHandler = (e) => {
     setTyping(true);
-    const numInput = parseFloat(e.target.value.replace(/,/g, ""));
+    // const numInput = parseFloat(e.target.value.replace(/,/g, ""));
+    const numInput = e.target.value;
 
-    // parseFloat(numAmount.replace(/,/g, ""));
+    // numInput = parseFloat(numInput.replace(/,/g, ""));
 
     // console.log(numInput, typeof numInput);
     setAmount(numInput);
-    computeAmount(numInput, currencyValue);
+    computeAmount(amount, currencyValue);
   }
   const inputOneHandler = (e) => {
     setQueryOne(e.target.value);
@@ -207,6 +224,18 @@ const CurrencyConverter = () => {
     // console.log(typeof result, result);
 
     setConvertAmount(result);
+  }
+
+  function getValueBySearchTerm(obj, searchTerm) {
+    for (const key in obj) {
+      if (
+        obj.hasOwnProperty(key) &&
+        key.toLowerCase() === searchTerm.toLowerCase()
+      ) {
+        return obj[key];
+      }
+    }
+    return null; // Return null if the search term is not found
   }
 
   return (
@@ -406,10 +435,16 @@ const CurrencyConverter = () => {
         <div className="result text-2xl">
           <p>
             <span>1.000 {selectedOne}</span> ={" "}
-            <span className="text-green-600">{currencyValue} {selectedTwo}</span>
+            <span className="text-green-600">
+              {currencyValue} {selectedTwo}
+            </span>
           </p>
-          <p className="text-[14px] font-[300]">{dateQuote}</p>
-          <p className="text-[14px] font-[300]">{description}</p>
+          <p className="text-[1rem] font-[400] mb-0">
+            {fromCurrencyName} to {toCurrencyName}
+          </p>
+          <p className="text-[0.75rem] font-[300] -mt-2">
+            Last Exchange Rate Date: {dateQuote}
+          </p>
         </div>
       </div>
     </div>
