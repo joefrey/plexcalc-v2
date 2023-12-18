@@ -188,7 +188,7 @@ const CurrencyConverter = () => {
 
     // console.log(numInput, typeof numInput);
     setAmount(numInput);
-    computeAmount(amount, currencyValue);
+    computeAmount(numInput, currencyValue);
   }
   const inputOneHandler = (e) => {
     setQueryOne(e.target.value);
